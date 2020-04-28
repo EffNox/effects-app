@@ -6,11 +6,7 @@ import * as frUserAct from '../../store/actions';
 import { Usuario } from '../../models/usuario.model';
 import { pluck, filter } from 'rxjs/operators';
 
-@Component({
-  selector: 'app-usuario',
-  templateUrl: './usuario.component.html',
-  styles: []
-})
+@Component({ selector: 'app-usuario', templateUrl: './usuario.component.html', })
 export class UsuarioComponent implements OnInit {
 
   usuario: Usuario;
@@ -19,8 +15,8 @@ export class UsuarioComponent implements OnInit {
   constructor(private router: ActivatedRoute, private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.router.params.subscribe(rs => {
-      this.store.dispatch(frUserAct.CARGAR_USUARIO(rs['id']));
+    this.router.params.pipe(pluck('id')).subscribe(id => {
+      this.store.dispatch(frUserAct.CARGAR_USUARIO({ id }));
       this.store.select('usuario').subscribe((rs: any) => {
         this.loading = rs.loading;
         this.error = rs.error;
